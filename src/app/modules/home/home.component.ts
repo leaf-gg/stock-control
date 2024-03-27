@@ -2,8 +2,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './../../services/user/user.service';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { SignupUserRequest } from 'src/app/interfaces/user/SignupUserRequest';
-import { AuthRequest } from 'src/app/interfaces/user/auth/AuthRequest';
+import { SignupUserRequest } from 'src/app/models/interfaces/user/SignupUserRequest';
+import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 

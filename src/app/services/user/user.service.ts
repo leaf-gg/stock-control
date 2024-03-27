@@ -1,11 +1,11 @@
 import { CookieService } from 'ngx-cookie-service';
-import { SignupUserResponse } from './../../interfaces/user/SignupUserResponse';
+import { SignupUserResponse } from '../../models/interfaces/user/SignupUserResponse';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SignupUserRequest } from 'src/app/interfaces/user/SignupUserRequest';
-import { AuthRequest } from 'src/app/interfaces/user/auth/AuthRequest';
-import { AuthResponse } from 'src/app/interfaces/user/auth/AuthResponse';
+import { SignupUserRequest } from 'src/app/models/interfaces/user/SignupUserRequest';
+import { AuthRequest } from 'src/app/models/interfaces/user/auth/AuthRequest';
+import { AuthResponse } from 'src/app/models/interfaces/user/auth/AuthResponse';
 import { enviroment } from 'src/enviroments/enviroment';
 
 @Injectable({
