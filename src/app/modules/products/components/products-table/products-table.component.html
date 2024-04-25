@@ -80,7 +80,7 @@
             <th pSortableColumn="description">
               <div class="flex justify-content-center">
                 <p-button styleClass="p-button-info" icon="pi pi-plus" label="Add" pTooltip="Add product"
-                  tooltipPosition="top">
+                  tooltipPosition="top" (onClick)="handleProductEvent(addProductEvent)">
                 </p-button>
               </div>
             </th>
@@ -106,9 +106,9 @@
             <td>
               <div class="flex justify-content-center gap-3 align-content-center align-items-center">
                 <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
-                  pTooltip="Edit product data" tooltipPosition="top"></button>
+                  pTooltip="Edit product data" tooltipPosition="top" (click)="handleProductEvent(editProductEvent, product?.id)"></button>
                 <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"
-                  pTooltip="Remove product" tooltipPosition="top"></button>
+                  pTooltip="Remove product" tooltipPosition="top" (click)="handleDeleteProduct(product.id, product.name)"></button>
               </div>
             </td>
           </tr>

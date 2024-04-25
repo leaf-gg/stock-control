@@ -1,8 +1,9 @@
 import { ProductsService } from './../../../../services/products/products.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
+import { EventAction } from 'src/app/models/interfaces/products/event/EventAction';
 import { GetAllProductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponse';
 import { ProductsDataTransferService } from 'src/app/shared/services/products/products-data-transfer.service';
 
@@ -19,7 +20,8 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
     private productsService: ProductsService,
     private productsDtService: ProductsDataTransferService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -29,13 +31,13 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
     const productsLoaded = this.productsDtService.getProductsDatas();
 
     if (productsLoaded.length > 0) {
-    console.log('products data', this.productsDatas)
+      console.log('products data', this.productsDatas);
       this.productsDatas = productsLoaded;
     } else {
       this.getAPIProductsDatas();
     }
 
-    console.log('products data', this.productsDatas)
+    console.log('products data', this.productsDatas);
   }
   getAPIProductsDatas() {
     this.productsService
@@ -45,8 +47,7 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response.length > 0) {
             this.productsDatas = response;
-            console.log('products data', this.productsDatas)
-
+            console.log('products data', this.productsDatas);
           }
         },
         error: (err) => {
@@ -60,6 +61,60 @@ export class ProductsHomeComponent implements OnInit, OnDestroy {
           this.router.navigate(['/dashboard']);
         },
       });
+  }
+
+  handleProductAction(event: EventAction): void {
+    if (event) {
+      console.log('event data received', event);
+    }
+  }
+
+  handleDeleteProductAction(event: {
+    product_id: string;
+    productName: string;
+  }): void {
+    if (event) {
+      console.log('event data received from delete product', event);
+      this.confirmationService.confirm({
+        message: `Are you sure to delete a product named: ${event?.productName}?`,
+        header: 'Delete confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Yes',
+        rejectLabel: 'No',
+        accept: () => this.deleteProduct(event?.product_id)
+      })
+    }
+  }
+  deleteProduct(product_id: string) {
+    if(product_id){
+      this.productsService.deleteProduct(product_id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if(response){
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Success',
+              detail: 'Product deleted with success!',
+              life: 2500,
+            });
+
+            this.getAPIProductsDatas();
+
+          }
+        }, error: (err) => {
+          console.log(err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Failed to remove product, please try again later',
+            life: 2500,
+          });
+
+        }
+      })
+
+    }
   }
 
   ngOnDestroy(): void {
