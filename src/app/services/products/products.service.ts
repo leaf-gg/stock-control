@@ -6,13 +6,13 @@ import { Observable, map } from 'rxjs';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { CreateProductResponse } from 'src/app/models/interfaces/products/response/CreateProductResponse';
 import { DeleteProductResponse } from 'src/app/models/interfaces/products/response/DeleteProductResponse';
-import { enviroment } from 'src/enviroments/enviroment';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  private API_URL = enviroment.API_URL;
+  private API_URL = environment.API_URL;
   private JWT_TOKEN = this.cookie.get('user_info');
   private httpOptions = {
     headers: new HttpHeaders({
