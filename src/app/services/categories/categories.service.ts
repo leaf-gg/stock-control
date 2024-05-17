@@ -6,24 +6,59 @@ import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/resp
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoriesService {
-
   private API_URL = environment.API_URL;
-  private JWT_TOKEN = this.cookie.get("user_info");
+  private JWT_TOKEN = this.cookie.get('user_info');
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${this.JWT_TOKEN}`
-    })
+      Authorization: `Bearer ${this.JWT_TOKEN}`,
+    }),
+  };
+
+  constructor(private http: HttpClient, private cookie: CookieService) {}
+
+  createNewCategory(requestDatas: {
+    name: string;
+  }): Observable<Array<GetCategoriesResponse>> {
+    return this.http.post<Array<GetCategoriesResponse>>(
+      `${this.API_URL}/category`,
+      requestDatas,
+      this.httpOptions
+    );
   }
 
-  constructor( private http: HttpClient, private cookie: CookieService) {}
-    getAllCategories(): Observable<Array<GetCategoriesResponse>> {
-      return this.http.get<Array<GetCategoriesResponse>>(
-        `${this.API_URL}/categories`,
-        this.httpOptions
-      );
-    }
+  editCategoryName(requestDatas: {
+    name: string;
+    category_id: string;
+  }): Observable<void> {
+    return this.http.put<void>(
+      `${this.API_URL}/category/edit`,
+      { name: requestDatas?.name },
+      {
+        ...this.httpOptions,
+        params: {
+          category_id: requestDatas.category_id,
+        },
+      }
+    );
+  }
+
+  getAllCategories(): Observable<Array<GetCategoriesResponse>> {
+    return this.http.get<Array<GetCategoriesResponse>>(
+      `${this.API_URL}/categories`,
+      this.httpOptions
+    );
+  }
+
+  deleteCategory(requestDatas: { category_id: string }): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/category/delete`, {
+      ...this.httpOptions,
+      params: {
+        category_id: requestDatas?.category_id,
+      },
+    });
+  }
 }
