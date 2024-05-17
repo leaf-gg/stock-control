@@ -5,7 +5,7 @@
   <div class="p-toolbar-group-center">
     <p-button icon="pi pi-cart-plus" label="Products" routerLink="/products" styleClass="bg-indigo-800 p-button-secondary" routerLinkActive="exact_route" class="mr-2"></p-button>
     <p-button icon="pi pi-ticket" label="Categories" routerLink="/categories" styleClass="bg-indigo-800 p-button-secondary" routerLinkActive="exact_route" class="mr-2"></p-button>
-    <p-button icon="pi pi-credit-card" label="Sale" routerLink="/products" styleClass="bg-indigo-800 p-button-secondary" routerLinkActive="exact_route" class="mr-2"></p-button>
+    <p-button icon="pi pi-credit-card" label="Sale" routerLink="/products" styleClass="bg-indigo-800 p-button-secondary" (onClick)="handleSaleProduct()" class="mr-2"></p-button>
 
   </div>
   <div class="p-toolbar-group-end">
